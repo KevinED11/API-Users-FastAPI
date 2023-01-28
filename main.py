@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel, EmailStr
 from uuid import uuid4, UUID
 from datetime import datetime
+from string import ascii_letters, digits, punctuation
+from secrets import choice
 
 app = FastAPI()
 
@@ -9,8 +11,9 @@ class User(BaseModel):
     id: UUID
     name: str
     surname: str
-    email: EmailStr
     age: int
+    email: EmailStr
+    password: str
     created_at: datetime
 
 
@@ -34,6 +37,7 @@ async def get_users():
 async def create_user(user: User):
     user.id = uuid4()
     user.created_at = datetime.now()
+    user.password == ''.join(choice(ascii_letters + digits + punctuation) for i in range(10))
 
     if user.age < 18:
         raise HTTPException(status_code=400, detail='User is under age')
@@ -62,4 +66,3 @@ async def delete_user(user_id: UUID):
     raise HTTPException(status_code=404, detail='User not found')
 
 
-#Falta agregar put y delete
