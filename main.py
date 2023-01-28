@@ -2,8 +2,7 @@ from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel, EmailStr
 from uuid import uuid4, UUID
 from datetime import datetime
-from string import ascii_letters, digits, punctuation
-from secrets import choice
+from password import gen_password, encrypt_password
 
 app = FastAPI()
 
@@ -37,7 +36,7 @@ async def get_users():
 async def create_user(user: User):
     user.id = uuid4()
     user.created_at = datetime.now()
-    user.password == ''.join(choice(ascii_letters + digits + punctuation) for i in range(10))
+    user.password = encrypt_password(gen_password())
 
     if user.age < 18:
         raise HTTPException(status_code=400, detail='User is under age')
