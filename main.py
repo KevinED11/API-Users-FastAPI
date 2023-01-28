@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel, EmailStr
 from uuid import uuid4, UUID
 from datetime import datetime
@@ -52,6 +52,14 @@ async def get_user_by_id(user_id: UUID):
             return user
     raise HTTPException(status_code=404, detail='User not found')
 
+
+@app.delete('/users/{user_id}')
+async def delete_user(user_id: UUID):
+    for i, user in enumerate(users):
+        if user.id == user_id:
+            users.pop(i)
+            return Response(content=None, status_code=204)
+    raise HTTPException(status_code=404, detail='User not found')
 
 
 #Falta agregar put y delete
