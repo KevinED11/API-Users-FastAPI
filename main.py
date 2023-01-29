@@ -28,12 +28,12 @@ async def read_root():
     return 'Welcome to mi API'
 
 
-@app.get('/users')
+@app.get('/users', response_model=User)
 async def get_users():
     return users
 
 
-@app.post('/users')
+@app.post('/users', response_model=User)
 async def create_user(user: User):
     user.id = uuid4()
     user.created_at = datetime.now()
@@ -49,7 +49,7 @@ async def create_user(user: User):
     return users[-1]
 
 
-@app.get('/users/{user_id}')
+@app.get('/users/{user_id}', response_model=User)
 async def get_user_by_id(user_id: UUID):
     for user in users:
         if user.id == user_id:
