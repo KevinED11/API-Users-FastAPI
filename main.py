@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel, EmailStr
+from typing import Optional, List
 from uuid import uuid4, UUID
 from datetime import datetime
 from password import gen_password, encrypt_password
@@ -11,6 +12,7 @@ class User(BaseModel):
     id: UUID
     name: str
     surname: str
+    username: str
     age: int
     email: EmailStr
     password: str
@@ -28,28 +30,42 @@ async def read_root():
     return 'Welcome to mi API'
 
 
-@app.get('/users', response_model=User)
-async def get_users():
-    return users
+@app.get('/users', response_model = List[User])
+async def get_users(name: Optional[str] = None, age: Optional[int] = None):
+    filtered_users = users
+    if name and age:
+        filtered_users = [user for user in filtered_users if user.name == name and user.age == age]
+    elif name:
+        filtered_users = [user for user in filtered_users if user.name == name]
+    elif age:
+        filtered_users = [user for user in filtered_users if user.age == age]
 
 
-@app.post('/users', response_model=User)
+    return filtered_users
+
+
+@app.post('/users', response_model = User)
 async def create_user(user: User):
     user.id = uuid4()
     user.created_at = datetime.now()
     user.password = encrypt_password(gen_password())
 
     if user.age < 18:
-        raise HTTPException(status_code=400, detail='User is under age')
+        raise HTTPException(status_code=400, detail='User is under age(place number >= 18)')
 
     for existing_user in users:
-        if user.email == existing_user.email or user.name == existing_user.name:
-            raise HTTPException(status_code=400, detail='User already exists')
+        if user.email == existing_user.email and user.username == existing_user.username:
+            raise HTTPException(status_code=400, detail=f'User with email ({user.email}) and username ({user.username}) already exists')
+        elif user.username == existing_user.username:
+            raise HTTPException(status_code=400, detail=f'User with Username ({user.username}) already exists')
+        elif user.email == existing_user.email:
+            raise HTTPException(status_code=400, detail=f' User with email ({user.email}) already exists')
+
     users.append(user)
     return users[-1]
 
 
-@app.get('/users/{user_id}', response_model=User)
+@app.get('/users/{user_id}', response_model = User)
 async def get_user_by_id(user_id: UUID):
     for user in users:
         if user.id == user_id:
