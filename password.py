@@ -13,7 +13,6 @@ def gen_password():
 
     return password
 
-
 def encrypt_password(password: str):
     return bcrypt.hash(password)
 

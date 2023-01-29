@@ -6,6 +6,7 @@ from password import gen_password, encrypt_password
 
 app = FastAPI()
 
+
 class User(BaseModel):
     id: UUID
     name: str
