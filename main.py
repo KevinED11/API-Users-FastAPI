@@ -1,12 +1,11 @@
 from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel, EmailStr
-from typing import Optional, List
+from typing import Optional, List, Dict
 from uuid import uuid4, UUID
 from datetime import datetime
 from password import gen_password, encrypt_password
 
 app = FastAPI()
-
 
 class User(BaseModel):
     id: UUID
@@ -19,20 +18,24 @@ class User(BaseModel):
     created_at: datetime
 
 
-users = [
+users: List[User] = [
 
 
 ]
 
+users_id_dict: Dict[UUID, User] = {
+
+
+}
 
 @app.get("/")
 async def read_root():
     return 'Welcome to mi API'
 
-
 @app.get('/users', response_model = List[User])
 async def get_users(name: Optional[str] = None, age: Optional[int] = None):
     filtered_users = users
+
     if name and age:
         filtered_users = [user for user in filtered_users if user.name == name and user.age == age]
     elif name:
@@ -40,9 +43,7 @@ async def get_users(name: Optional[str] = None, age: Optional[int] = None):
     elif age:
         filtered_users = [user for user in filtered_users if user.age == age]
 
-
     return filtered_users
-
 
 @app.post('/users', response_model = User)
 async def create_user(user: User):
@@ -62,23 +63,36 @@ async def create_user(user: User):
             raise HTTPException(status_code=400, detail=f' User with email ({user.email}) already exists')
 
     users.append(user)
+    users_id_dict[user.id] = user
     return users[-1]
-
 
 @app.get('/users/{user_id}', response_model = User)
 async def get_user_by_id(user_id: UUID):
-    for user in users:
-        if user.id == user_id:
-            return user
-    raise HTTPException(status_code=404, detail=f'User with id {user_id} not found')
+    if user_id in users_id_dict:
+        return users_id_dict[user_id]
+    else:
+        raise HTTPException(status_code=404, detail=f'User with id {user_id} not found')
 
+    #for user in users:
+        #if user.id == user_id:
+            #return user
+    #raise HTTPException(status_code=404, detail=f'User with id {user_id} not found')
 
-@app.delete('/users/{user_id}')
+@app.delete('/users/{user_id}', response_model = None)
 async def delete_user(user_id: UUID):
-    for i, user in enumerate(users):
-        if user.id == user_id:
-            users.pop(i)
-            return Response(content=None, status_code=204)
+    if user_id in users_id_dict:
+        user = users_id_dict.pop(user_id)
+        users.remove(user)
+        return Response(content=None, status_code=204)
     raise HTTPException(status_code=404, detail='User not found')
 
+    #for i, user in enumerate(users):
+        #if user.id == user_id:
+            #users.pop(i)
+            #return Response(content=None, status_code=204)
+    #raise HTTPException(status_code=404, detail='User not found')
+
+@app.put('users/{user_id}')
+async def update_user():
+    pass
 
