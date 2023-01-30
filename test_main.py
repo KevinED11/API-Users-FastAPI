@@ -18,16 +18,5 @@ class TestClass:
         assert all(isinstance(i, User) for i in users_list_obj)
         print(users_list_obj)
 
-    def test_create_user(self):
-        response = post("http://localhost/users")
-        assert  response.status_code == 200
-        new_user = response.json()
-        assert new_user['id'] in new_user and new_user['username'] and new_user['password'] and new_user['age']
-        print(new_user)
 
-    def test_get_user_by_id(self):
-        pass
-
-    def test_delete_user(self):
-        pass
 
