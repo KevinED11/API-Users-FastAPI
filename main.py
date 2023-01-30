@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Response
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Required
 from typing import Optional, List, Dict
 from uuid import uuid4, UUID
 from datetime import datetime
@@ -30,7 +30,7 @@ users_id_dict: Dict[UUID, User] = {
 
 @app.get("/")
 async def read_root():
-    return 'Welcome to mi API'
+    return {"message": "Welcome to my API"}
 
 @app.get('/users', response_model = List[User])
 async def get_users(name: Optional[str] = None, age: Optional[int] = None):
@@ -45,7 +45,7 @@ async def get_users(name: Optional[str] = None, age: Optional[int] = None):
 
     return filtered_users
 
-@app.post('/users', response_model = User)
+@app.post('/users', response_model = Dict)
 async def create_user(user: User):
     user.id = uuid4()
     user.created_at = datetime.now()
@@ -64,7 +64,7 @@ async def create_user(user: User):
 
     users.append(user)
     users_id_dict[user.id] = user
-    return users[-1]
+    return Response(status_code=201, content=str({'message': 'user created successfully', 'user_id': user.id, 'username': user.name}))
 
 @app.get('/users/{user_id}', response_model = User)
 async def get_user_by_id(user_id: UUID):
@@ -83,7 +83,7 @@ async def delete_user(user_id: UUID):
     if user_id in users_id_dict:
         user = users_id_dict.pop(user_id)
         users.remove(user)
-        return Response(content=None, status_code=204)
+        return Response(status_code=204, content=None)
     raise HTTPException(status_code=404, detail='User not found')
 
     #for i, user in enumerate(users):
