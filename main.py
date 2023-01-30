@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Response
-from pydantic import BaseModel, EmailStr, Required
+from pydantic import BaseModel, EmailStr
 from typing import Optional, List, Dict
 from uuid import uuid4, UUID
 from datetime import datetime
@@ -45,7 +45,7 @@ async def get_users(name: Optional[str] = None, age: Optional[int] = None):
 
     return filtered_users
 
-@app.post('/users', response_model = Dict)
+@app.post('/users', response_model = User)
 async def create_user(user: User):
     user.id = uuid4()
     user.created_at = datetime.now()
