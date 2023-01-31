@@ -102,7 +102,7 @@ async def delete_user(user_id: UUID):
             #return Response(content=None, status_code=204)
     #raise HTTPException(status_code=404, detail='User not found')
 
-@app.put('users/{user_id}', response_model= User)
+@app.put('/users/{user_id}', response_model= User)
 async def update_user(user_id: UUID, updated_user: User):
     if user_id not in users_id_dict:
         raise HTTPException(status_code=404, detail=f'User with id {user_id} not found')
