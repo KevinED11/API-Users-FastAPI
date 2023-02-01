@@ -4,6 +4,7 @@ from typing import Optional, List, Dict
 from uuid import uuid4, UUID
 from datetime import datetime
 from password import gen_password, encrypt_password
+from routes.users.root import app_root
 
 app = FastAPI()
 
@@ -38,9 +39,8 @@ users_id_dict: Dict[UUID, User] = {
 
 }
 
-@app.get("/", status_code=200)
-async def read_root():
-    return {"message": "Welcome to my API"}
+
+app.include_router(app_root)
 
 @app.get('/users', response_model = List[User])
 async def get_users(name: Optional[str] = None, age: Optional[int] = None):
