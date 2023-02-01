@@ -38,7 +38,7 @@ users_id_dict: Dict[UUID, User] = {
 
 }
 
-@app.get("/")
+@app.get("/", status_code=200)
 async def read_root():
     return {"message": "Welcome to my API"}
 
@@ -55,7 +55,7 @@ async def get_users(name: Optional[str] = None, age: Optional[int] = None):
 
     return filtered_users
 
-@app.post('/users', response_model = User)
+@app.post('/users', response_model = User, status_code=201, response_description='Created a new user')
 async def create_user(user: User):
     user.id = uuid4()
     user.created_at = datetime.now()
@@ -74,16 +74,16 @@ async def create_user(user: User):
 
     users_ls.append(user)
     users_id_dict[user.id] = user
-    return Response(status_code=201, content=str({'message': 'user created successfully', 'user_id': user.id, 'username': user.name, 'password': user.password}))
+    return Response(status_code=201, content=str({'message': 'user created successfully', 'user_id': user.id, 'username': user.name}))
 
-@app.get('/users/{user_id}', response_model = User)
+@app.get('/users/{user_id}', response_model = User, response_description='User found')
 async def get_user_by_id(user_id: UUID):
     if user_id in users_id_dict:
         return users_id_dict[user_id]
     else:
         raise HTTPException(status_code=404, detail=f'User with id {user_id} not found')
 
-@app.delete('/users/{user_id}', response_model = None)
+@app.delete('/users/{user_id}', response_model = None, status_code=204, response_description='User deleted')
 async def delete_user(user_id: UUID):
     if user_id in users_id_dict:
         user = users_id_dict.pop(user_id)
@@ -92,17 +92,25 @@ async def delete_user(user_id: UUID):
     raise HTTPException(status_code=404, detail='User not found')
 
 
-@app.put('/users/{user_id}', response_model= User)
+@app.put('/users/{user_id}', response_model= User,  status_code=200, response_description='Updated user')
 async def update_user(user_id: UUID, updated_user: User):
     if user_id not in users_id_dict:
         raise HTTPException(status_code=404, detail=f'User with id {user_id} not found')
 
     user: User = users_id_dict[user_id]
-    user.username = updated_user.username
-    user.name = updated_user.name
-    user.email = updated_user.email
-    user.surname = updated_user.surname
-    user.age = updated_user.age
+
+    user.username, user.name, user.email, user.surname, user.age = (
+        updated_user.username,
+        updated_user.name,
+        updated_user.email,
+        updated_user.surname,
+        updated_user.age
+    )
+    #user.username = updated_user.username
+    #user.name = updated_user.name
+    #user.email = updated_user.email
+    #user.surname = updated_user.surname
+    #user.age = updated_user.age
 
     users_id_dict[user_id] = user
 
@@ -111,7 +119,6 @@ async def update_user(user_id: UUID, updated_user: User):
             users_ls[i] = user
 
     return user
-
 
 
 
