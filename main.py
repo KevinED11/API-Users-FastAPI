@@ -83,11 +83,6 @@ async def get_user_by_id(user_id: UUID):
     else:
         raise HTTPException(status_code=404, detail=f'User with id {user_id} not found')
 
-    #for user in users:
-        #if user.id == user_id:
-            #return user
-    #raise HTTPException(status_code=404, detail=f'User with id {user_id} not found')
-
 @app.delete('/users/{user_id}', response_model = None)
 async def delete_user(user_id: UUID):
     if user_id in users_id_dict:
@@ -96,11 +91,6 @@ async def delete_user(user_id: UUID):
         return Response(status_code=204, content=None)
     raise HTTPException(status_code=404, detail='User not found')
 
-    #for i, user in enumerate(users):
-        #if user.id == user_id:
-            #users.pop(i)
-            #return Response(content=None, status_code=204)
-    #raise HTTPException(status_code=404, detail='User not found')
 
 @app.put('/users/{user_id}', response_model= User)
 async def update_user(user_id: UUID, updated_user: User):
@@ -115,6 +105,7 @@ async def update_user(user_id: UUID, updated_user: User):
     user.age = updated_user.age
 
     users_id_dict[user_id] = user
+
     for i, existing_user in enumerate(users_ls):
         if existing_user.id == user_id:
             users_ls[i] = user
