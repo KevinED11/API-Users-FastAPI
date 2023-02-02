@@ -1,6 +1,6 @@
 from routes.users.users_get import *
 from models.User import *
-from fastapi import HTTPException
+
 
 userFind = APIRouter()
 

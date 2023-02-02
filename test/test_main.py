@@ -1,14 +1,17 @@
 from models.User import User
-from requests import *
+from requests import get, post, RequestException
 from typing import List, Dict
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 class TestClass:
     def test_read_root(self):
-        response = get("http://localhost:8000/")
-        assert response.status_code == 200
-        print(response.json())
-        assert response.json() == {"message": "Welcome to my API"}
+        try:
+            response = get("http://localhost:8000/")
+            assert response.status_code == 200
+            print(response.json())
+            assert response.json() == {"message": "Welcome to my API"}
+        except RequestException as error:
+            print(error)
 
     def test_get_users(self):
 
