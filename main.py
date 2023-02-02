@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from models.User import User
 from routes.users.root_get import rootGet
 from routes.users.user_creation import userCreation
 from routes.users.users_get import usersGet
