@@ -9,7 +9,6 @@ from routes.users.user_update_field import userUpdateField
 
 
 
-
 app = FastAPI()
 
 
