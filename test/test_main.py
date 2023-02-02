@@ -1,4 +1,4 @@
-from main import User
+from models.User import User
 from requests import *
 from typing import List, Dict
 from uuid import UUID, uuid4
