@@ -5,12 +5,10 @@ from models.User import User
 
 usersGet = APIRouter()
 
-
 users_ls: List[User] = [
 
 
 ]
-
 
 @usersGet.get('/users', response_model = List[User])
 async def get_users(name: Optional[str] = None, age: Optional[int] = None):
