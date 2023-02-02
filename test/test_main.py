@@ -35,7 +35,6 @@ class TestClass:
         response = get(f"http://localhost:8000/users/{random_id}")
         assert response.status_code == 404, 'User not found'
         assert response.status_code == 200
-
         user_response_dict: Dict = response.json()
         print(user_response_dict)
         obj_user: User = User(**user_response_dict)

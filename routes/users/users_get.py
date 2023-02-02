@@ -1,7 +1,7 @@
-from typing import Optional, List
-
-from models.User import User
 from routes.users.root_get import *
+from typing import Optional, List
+from models.User import User
+
 
 usersGet = APIRouter()
 
