@@ -1,4 +1,6 @@
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import sessionmaker
+from sqlmodel import create_engine, SQLModel
+engine = create_engine("postgresql+psycopg2://postgres:root@localhost:5432/postgres", echo=True)
 
-engine = create_engine("")
+conn = engine.connect()
+
+meta_data = SQLModel()
