@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from typing import List, Dict
-from models.User import *
+from models.User import User
+from uuid import UUID
 
 users_ls: List[User] = [
 
