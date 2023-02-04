@@ -1,4 +1,8 @@
-from routes.users.user_creation import *
+from fastapi import APIRouter, HTTPException
+from models.User import User
+from uuid import UUID
+from routes.users.root_get import users_id_dict, users_ls
+
 
 
 userUpdate = APIRouter()
@@ -22,7 +26,7 @@ async def update_user(user_id: UUID, updated_user: User):
     users_id_dict[user_id] = user
 
     for i, existing_user in enumerate(users_ls):
-        if existing_user.id == user_id:
+        if existing_user.id_user == user_id:
             users_ls[i] = user
 
     return user

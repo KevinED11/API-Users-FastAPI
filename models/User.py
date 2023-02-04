@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 class User(BaseModel):
-    id: UUID
+    id_user: UUID
     name: str
     surname: str
     username: str

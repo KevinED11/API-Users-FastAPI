@@ -1,5 +1,10 @@
+from environ import Env
+env = Env()
+
+
 from fastapi import FastAPI
 from routes.users.root_get import rootGet
+
 from routes.users.user_creation import userCreation
 from routes.users.users_get import usersGet
 from routes.users.user_find import userFind

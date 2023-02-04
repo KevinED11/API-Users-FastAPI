@@ -1,5 +1,5 @@
-from routes.users.root_get import *
-from fastapi import HTTPException
+from routes.users.root_get import users_ls
+from fastapi import APIRouter, HTTPException
 from models.User import User
 from typing import Optional, List
 
