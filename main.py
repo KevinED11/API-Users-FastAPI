@@ -1,10 +1,6 @@
-from environ import Env
-env = Env()
-
-
 from fastapi import FastAPI
 from routes.users.root_get import rootGet
-
+from routes.users.info import infoGet
 from routes.users.user_creation import userCreation
 from routes.users.users_get import usersGet
 from routes.users.user_find import userFind
@@ -13,14 +9,16 @@ from routes.users.user_delete import userDelete
 from routes.users.user_update_field import userUpdateField
 
 
-
 app = FastAPI()
 
 
 
-
-
 app.include_router(rootGet)
+
+
+
+
+app.include_router(infoGet)
 
 
 app.include_router(userCreation)
