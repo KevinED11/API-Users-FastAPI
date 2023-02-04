@@ -4,10 +4,9 @@ from models.User import User
 from datetime import datetime
 from Password import Password
 from uuid import uuid4
-
 from config.db_connection import engine
 from sqlmodel import Session
-from models.User_Db import NewUser
+from models.User_Table import NewUserInDb
 
 userCreation = APIRouter()
 
@@ -30,7 +29,7 @@ async def create_user(user_obj: User):
 
     users_ls.append(user_obj)
 
-    new_user_db = NewUser(
+    new_user_db = NewUserInDb(
         id_user=user_obj.id_user,
         name = user_obj.name,
         surname = user_obj.surname,

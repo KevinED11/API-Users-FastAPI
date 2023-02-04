@@ -3,7 +3,7 @@ from uuid import UUID
 from typing import Optional
 from pydantic import EmailStr
 from datetime import datetime
-class NewUser(SQLModel, table=True):
+class NewUserInDb(SQLModel, table=True):
     id: Optional[int] = Field(default = None, primary_key=True)
     id_user: UUID
     name: str
