@@ -1,7 +1,7 @@
 from routes.users.root_get import users_ls
 from fastapi import APIRouter, HTTPException
 from models.User import User
-from typing import Optional, List
+from typing import Optional
 
 
 
@@ -9,7 +9,7 @@ usersGet = APIRouter()
 
 
 
-@usersGet.get('/users', response_model = List[User])
+@usersGet.get('/users', response_model = list[User])
 async def get_users(name: Optional[str] = None, age: Optional[int] = None):
     if age is not None and age < 18:
         raise HTTPException(status_code=400, detail='Place a age > 17')

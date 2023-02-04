@@ -1,14 +1,14 @@
 from fastapi import APIRouter
-from typing import List, Dict
 from models.User import User
 from uuid import UUID
 
-users_ls: List[User] = [
+
+users_ls: list[User] = [
 
 
 ]
 
-users_id_dict: Dict[UUID, User] = {
+users_id_dict:dict[UUID | User] = {
 
 
 }
