@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models.User import User
+from models.request.User import User
 from uuid import UUID
 from routes.users.root_get import users_id_dict, users_ls
 

@@ -1,4 +1,3 @@
-from models.User_Table import NewUserInDb
 from config.db_connection import engine
 from sqlmodel import SQLModel, Session
 

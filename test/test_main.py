@@ -1,4 +1,4 @@
-from models.User import User
+from models.request.User import User
 from requests import get, post, RequestException
 from typing import List, Dict
 from uuid import uuid4

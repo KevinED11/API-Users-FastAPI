@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from config.init_db import create_db_and_table
 from routes.users.root_get import rootGet
 from routes.users.info import infoGet
 from routes.users.user_creation import userCreation
@@ -8,9 +9,11 @@ from routes.users.user_update import userUpdate
 from routes.users.user_delete import userDelete
 from routes.users.user_update_field import userUpdateField
 
-
 app = FastAPI()
 
+@app.on_event("startup")
+def on_startup():
+    create_db_and_table()
 
 
 app.include_router(rootGet)
