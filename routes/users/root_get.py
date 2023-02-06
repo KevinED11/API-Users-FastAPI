@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from models.User import User
+from models.request.User import User
 from uuid import UUID
 
 

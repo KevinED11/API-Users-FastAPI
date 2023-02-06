@@ -1,5 +1,5 @@
 from requests import post, RequestException
-from models.User import User
+from models.request.User import User
 def test_create_user():
     try:
         header = {'Accept': 'application/json'}

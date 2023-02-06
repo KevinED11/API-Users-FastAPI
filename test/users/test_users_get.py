@@ -1,5 +1,5 @@
 from requests import get, RequestException
-from models.User import User
+from models.request.User import User
 def test_get_users():
     try:
         response = get("http://127.0.0.1:8000/users")

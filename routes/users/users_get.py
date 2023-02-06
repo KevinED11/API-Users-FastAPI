@@ -1,25 +1,38 @@
-from routes.users.root_get import users_ls
 from fastapi import APIRouter, HTTPException
-from models.User import User
-from typing import Optional
-
-
+from models.request.User import User
+from models.database.User import Users
+from config.db_connection import engine
+from sqlmodel import Session, select
 
 usersGet = APIRouter()
 
+response_type = list[User] | HTTPException
+@usersGet.get('/users', response_model=list[User],status_code=200)
+async def get_users(name: str | None = None, age: int | None = None):
+
+    with Session(engine) as session:
+        users = session.exec(select(Users)).all()
+
+        session.close()
+        #query_selection = select(Users)
+        #result = session.exec(query_selection)
+        #users = result.all()
 
 
-@usersGet.get('/users', response_model = list[User])
-async def get_users(name: Optional[str] = None, age: Optional[int] = None):
-    if age is not None and age < 18:
-        raise HTTPException(status_code=400, detail='Place a age > 17')
+        if name and age:
+            users = [user for user in users if user.name == name and user.age == age]
 
-    filtered_users: list[User] = users_ls
-    if name and age:
-        filtered_users = [user for user in filtered_users if user.name == name and user.age == age]
-    elif name:
-        filtered_users = [user for user in filtered_users if user.name == name]
-    elif age:
-        filtered_users = [user for user in filtered_users if user.age == age]
+            return users
 
-    return filtered_users
+        elif name:
+            users = [user for user in users if user.name == name]
+            return users
+        elif age:
+            users = [user for user in users if user.age == age]
+            return users
+
+
+        return users
+
+
+

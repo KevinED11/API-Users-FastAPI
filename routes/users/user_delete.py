@@ -1,13 +1,21 @@
-from fastapi import APIRouter, HTTPException, Response
-from routes.users.root_get import users_ls, users_id_dict
+from fastapi import APIRouter, Response
+from config.db_connection import engine
+from sqlmodel import Session, select
+from models.database.User import Users
+
 from uuid import UUID
 
 userDelete = APIRouter()
 
 @userDelete.delete('/users/{user_id}', response_model = None, status_code=204, response_description='User deleted')
 async def delete_user(user_id: UUID):
-    if user_id in users_id_dict:
-        user = users_id_dict.pop(user_id)
-        users_ls.remove(user)
-        return Response(status_code=204, content=None)
-    raise HTTPException(status_code=404, detail='User not found')
+    with Session(engine) as session:
+        all_users = session.exec(select(Users)).all()
+
+        for user in all_users:
+
+            if user.id_user == user_id:
+                session.delete(user)
+                session.commit()
+                return Response(content=None, status_code=204)
+
