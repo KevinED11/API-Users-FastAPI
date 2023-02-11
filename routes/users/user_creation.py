@@ -5,9 +5,9 @@ from Password import Password
 from uuid import uuid4
 from config.db_connection import engine
 from sqlmodel import Session
-from models.database.User import Users
+from models.database.Users import Users
 
-userCreation = APIRouter()
+userCreation = APIRouter(tags=['Users'])
 
 @userCreation.post('/users', response_model = User, status_code=201, response_description='Created a new user')
 async def create_user(user_request: User = Body(example=

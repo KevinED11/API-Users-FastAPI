@@ -1,4 +1,8 @@
 from fastapi import FastAPI
+
+from dotenv import load_dotenv
+load_dotenv()
+
 from config.init_db import create_db_and_table
 from routes.users.root_get import rootGet
 from routes.users.info import infoGet
@@ -9,7 +13,9 @@ from routes.users.user_update import userUpdate
 from routes.users.user_delete import userDelete
 from routes.users.user_update_field import userUpdateField
 
+
 app = FastAPI()
+
 
 @app.on_event("startup")
 def on_startup():
@@ -17,8 +23,6 @@ def on_startup():
 
 
 app.include_router(rootGet)
-
-
 
 
 app.include_router(infoGet)

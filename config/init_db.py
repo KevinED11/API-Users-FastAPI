@@ -1,9 +1,8 @@
+from models.database.Users import Users
 from config.db_connection import engine
 from sqlmodel import SQLModel, Session
-
-
 def create_db_and_table():
-    SQLModel.metadata.create_all(engine)
+    SQLModel.metadata.create_all(bind=engine)
 
 def save_table_in_db():
     session = Session(engine)

@@ -2,10 +2,10 @@ from fastapi import APIRouter
 from models.request.User import User
 from uuid import UUID
 from sqlmodel import Session, select
-from models.database.User import Users
+from models.database.Users import Users
 from config.db_connection import engine
 
-userFind = APIRouter()
+userFind = APIRouter(tags=['Users'])
 
 @userFind.get('/users/{user_id}', response_model = User, response_description='User found')
 async def get_user_by_id(user_id: UUID):

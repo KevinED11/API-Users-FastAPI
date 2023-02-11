@@ -13,7 +13,7 @@ users_id_dict:dict[UUID | User] = {
 
 }
 
-rootGet = APIRouter()
+rootGet = APIRouter(tags=['Default'])
 
 
 

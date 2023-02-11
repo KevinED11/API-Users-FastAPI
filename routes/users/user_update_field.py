@@ -2,7 +2,8 @@ from fastapi import APIRouter, HTTPException, Query, Path, Body
 from pydantic import EmailStr
 from uuid import UUID
 from routes.users.root_get import users_id_dict, users_ls
-userUpdateField = APIRouter()
+
+userUpdateField = APIRouter(tags=['Users'])
 
 @userUpdateField.patch('/users/{user_id}', response_model=None, status_code=200)
 async def field_update(user_id: UUID,
