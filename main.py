@@ -1,6 +1,12 @@
 from fastapi import FastAPI
-from config.init_db import create_db_and_table
-from routes.users.root_get import rootGet
+
+from uvicorn import run as uvicorn_run
+from dotenv import load_dotenv
+load_dotenv()
+
+from config.init_db import add_tables_in_db
+from starlette.staticfiles import StaticFiles
+from routes.frontend.app import getAppFrontend
 from routes.users.info import infoGet
 from routes.users.user_creation import userCreation
 from routes.users.users_get import usersGet
@@ -13,12 +19,14 @@ app = FastAPI()
 
 @app.on_event("startup")
 def on_startup():
-    create_db_and_table()
+    add_tables_in_db()
+
+#static files server
+
+app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="static")
 
 
-app.include_router(rootGet)
-
-
+app.include_router(getAppFrontend)
 
 
 app.include_router(infoGet)
@@ -33,7 +41,6 @@ app.include_router(usersGet)
 app.include_router(userFind)
 
 
-
 app.include_router(userDelete)
 
 
@@ -41,3 +48,7 @@ app.include_router(userUpdate)
 
 
 app.include_router(userUpdateField)
+
+
+if __name__ == "__main__":
+    uvicorn_run(app=app, host="localhost", port=8000)

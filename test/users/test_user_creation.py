@@ -1,5 +1,5 @@
 from requests import post, RequestException
-from models.request.User import User
+from models.request.UserCreation import UserCreation
 def test_create_user():
     try:
         header = {'Accept': 'application/json'}
@@ -23,7 +23,7 @@ def test_create_user():
             assert new_user['detail'] == f"User with email ({new_user['email']}) and username ({new_user['username']}) already exists"
         elif response.status_code == 201:
             assert response.status_code == 201
-            dict_to_user = User(**new_user)
-            assert isinstance(dict_to_user, User)
+            dict_to_user = UserCreation(**new_user)
+            assert isinstance(dict_to_user, UserCreation)
     except RequestException as error:
         return error

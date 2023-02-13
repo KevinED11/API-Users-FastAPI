@@ -3,7 +3,7 @@ from config.settings import Settings
 from functools import lru_cache
 from dotenv import get_key
 
-infoGet = APIRouter()
+infoGet = APIRouter(tags=['Default'])
 
 @lru_cache()
 def get_settings():
