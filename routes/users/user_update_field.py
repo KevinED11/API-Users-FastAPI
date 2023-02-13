@@ -1,7 +1,7 @@
-from fastapi import APIRouter, HTTPException, Query, Path, Body
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import EmailStr
 from uuid import UUID
-from routes.users.root_get import users_id_dict, users_ls
+from routes.frontend.app import users_id_dict, users_ls
 
 userUpdateField = APIRouter(tags=['Users'])
 

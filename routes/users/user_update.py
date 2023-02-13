@@ -1,18 +1,18 @@
 from fastapi import APIRouter, HTTPException, Body
 from config.db_connection import engine
-from models.request.User import User
+from models.request.UserCreation import UserCreation
 from models.database.Users import Users
 from sqlmodel import Session, select
 from uuid import UUID
-from routes.users.root_get import users_id_dict, users_ls
+from routes.frontend.app import users_id_dict, users_ls
 
 
 
 userUpdate = APIRouter(tags=['Users'])
 
 
-@userUpdate.put('/users/{user_id}', response_model= User, status_code=200, response_description='Updated user exist')
-async def update_user(user_id: UUID, updated_user: User = Body(
+@userUpdate.put('/users/{user_id}', response_model= UserCreation, status_code=200, response_description='Updated user exist')
+async def update_user(user_id: UUID, updated_user: UserCreation = Body(
     example= {
   "name": "Jhon",
   "surname": "Gomez",
@@ -55,7 +55,7 @@ async def update_user(user_id: UUID, updated_user: User = Body(
     if user_id not in users_id_dict:
         raise HTTPException(status_code=404, detail=f'User with id {user_id} not found')
 
-    user_exist: User = users_id_dict[user_id]
+    user_exist: UserCreation = users_id_dict[user_id]
 
     user_exist.username, user_exist.name, user_exist.email, user_exist.surname, user_exist.age = (
         updated_user.username,

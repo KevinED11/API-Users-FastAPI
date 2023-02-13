@@ -1,6 +1,6 @@
 from models.base.UserBase import UserBase
 
-class User(UserBase):
+class UserCreation(UserBase):
     pass
 
     # @validator("password")

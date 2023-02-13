@@ -2,7 +2,6 @@ from fastapi import APIRouter, Response
 from config.db_connection import engine
 from sqlmodel import Session, select
 from models.database.Users import Users
-
 from uuid import UUID
 
 userDelete = APIRouter(tags=['Users'])

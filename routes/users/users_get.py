@@ -1,13 +1,11 @@
 from fastapi import APIRouter, HTTPException
-from models.request.User import User
+from models.read.UserRead import UserRead
 from models.database.Users import Users
 from config.db_connection import engine
 from sqlmodel import Session, select
-
 usersGet = APIRouter(tags=['Users'])
 
-response_type = list[User] | HTTPException
-@usersGet.get('/users', response_model=list[User],status_code=200)
+@usersGet.get('/users', response_model=list[UserRead], status_code=200)
 async def get_users(name: str | None = None, age: int | None = None):
 
     with Session(engine) as session:

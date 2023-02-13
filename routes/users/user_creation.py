@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException, Response, Body
-from models.request.User import User
+from starlette.status import HTTP_400_BAD_REQUEST
+from models.request.UserCreation import UserCreation
+from models.read.UserRead import UserRead
 from datetime import datetime
 from Password import Password
 from uuid import uuid4
@@ -9,8 +11,8 @@ from models.database.Users import Users
 
 userCreation = APIRouter(tags=['Users'])
 
-@userCreation.post('/users', response_model = User, status_code=201, response_description='Created a new user')
-async def create_user(user_request: User = Body(example=
+@userCreation.post('/users', response_model = UserRead, status_code=201, response_description='Created a new user')
+async def create_user(user_request: UserCreation = Body(example=
 {
   "name": "Jhon",
   "surname": "Gomez",
@@ -25,7 +27,7 @@ async def create_user(user_request: User = Body(example=
     user_request.password = Password.encrypt_password(Password.gen_password())
 
     if user_request.age < 18:
-        raise HTTPException(status_code=400, detail='User is under age(place number >= 18)')
+        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail='User is under age(place number >= 18)')
 
     with Session(engine) as session:
         new_user = Users(**user_request.dict())

@@ -1,4 +1,4 @@
-from models.request.User import User
+from models.request.UserCreation import UserCreation
 from requests import get, post, RequestException
 from typing import List, Dict
 from uuid import uuid4
@@ -21,8 +21,8 @@ class TestClass:
 
         assert response.status_code == 200
         users_response_dict: List[Dict] = response.json()
-        users_list_obj: List[User] = [User(**user) for user in users_response_dict]
-        assert all(isinstance(i, User) for i in users_list_obj)
+        users_list_obj: List[UserCreation] = [UserCreation(**user) for user in users_response_dict]
+        assert all(isinstance(i, UserCreation) for i in users_list_obj)
         print(f'json a obj User: {users_list_obj}')
 
     def test_create_user(self):
@@ -40,8 +40,8 @@ class TestClass:
         assert response.status_code == 200
         user_response_dict: Dict = response.json()
         print(user_response_dict)
-        obj_user: User = User(**user_response_dict)
-        assert isinstance(obj_user, User)
+        obj_user: UserCreation = UserCreation(**user_response_dict)
+        assert isinstance(obj_user, UserCreation)
 
 
 
