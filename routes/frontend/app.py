@@ -23,6 +23,7 @@ getAppFrontend = APIRouter(tags=['Frontend'])
     HTTP_404_NOT_FOUND: {"description": "File not found"}
 })
 async def get_app_frontend():
+
     try:
         with open("./frontend/dist/index.html", "r") as app_react:
             content_app = app_react.read()

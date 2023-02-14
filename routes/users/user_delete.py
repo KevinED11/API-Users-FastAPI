@@ -4,6 +4,7 @@ from sqlmodel import Session, select
 from models.database.Users import Users
 from uuid import UUID
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+
 userDelete = APIRouter(tags=['Users'])
 
 @userDelete.delete('/users/{user_id}', response_model = None, status_code=204, response_description='User deleted')
@@ -17,6 +18,7 @@ async def delete_user(user_id: UUID):
 
         session.delete(user_to_delete)
         session.commit()
+
         return Response(status_code=HTTP_204_NO_CONTENT, content=None)
 
 

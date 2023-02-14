@@ -14,6 +14,7 @@ from routes.users.user_find import userFind
 from routes.users.user_update import userUpdate
 from routes.users.user_delete import userDelete
 from routes.users.user_update_field import userUpdateField
+from routes.users.filter_users import filterUsers
 
 app = FastAPI()
 
@@ -36,6 +37,9 @@ app.include_router(userCreation)
 
 
 app.include_router(usersGet)
+
+
+app.include_router(filterUsers)
 
 
 app.include_router(userFind)
