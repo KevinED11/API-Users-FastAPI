@@ -8,6 +8,8 @@ usersGet = APIRouter(tags=['Users'])
 
 @usersGet.get('/users', response_model=list[UserRead], status_code=200)
 async def get_users(offset: int = 0, limit: int = Query(default=10, le=100)):
+    if offset < 0:
+        offset = abs(offset)
 
     with Session(engine) as session:
         #Users returned
