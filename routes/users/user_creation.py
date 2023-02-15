@@ -34,7 +34,6 @@ async def create_user(user_request: UserCreation = Body(example=
         raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail='User is under age(place number >= 18)')
 
 
-
     with Session(engine) as session:
         new_user = Users(**user_request.dict())
         session.add(new_user)

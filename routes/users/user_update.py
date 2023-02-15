@@ -6,6 +6,7 @@ from models.database.Users import Users
 from sqlmodel import Session, select
 from uuid import UUID
 from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
+from Password import Password
 
 userUpdate = APIRouter(tags=['Users'])
 
@@ -22,7 +23,7 @@ async def user_update(user_id: UUID, updated_user: UserCreation = Body(
 }
 )):
     with Session(engine) as session:
-        existing_user_to_update: Users | None = session.exec(select(Users).where(user_id == Users.id_user)).one_or_none()
+        existing_user_to_update: Users | None = session.exec(select(Users).where( (user_id == Users.id_user) )).first()
 
         if existing_user_to_update is None:
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="User not found")
@@ -33,13 +34,15 @@ async def user_update(user_id: UUID, updated_user: UserCreation = Body(
             updated_user.username,
             updated_user.age,
             updated_user.email,
-            updated_user.password
-        )
+            Password.encrypt_password(updated_user.password) if not Password.verify_password(password=updated_user.password, hashed_password=existing_user_to_update.password) else existing_user_to_update.password)
 
-        session.refresh(existing_user_to_update)
         session.commit()
+        session.refresh(existing_user_to_update)
 
         return existing_user_to_update
+
+
+
 
 
 
