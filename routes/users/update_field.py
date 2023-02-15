@@ -1,39 +1,25 @@
 from fastapi import APIRouter, HTTPException, Query
-from pydantic import EmailStr
+from config.db_connection import engine
+from sqlmodel import Session, select,update
+from models.database.Users import Users as UsersInTable
+from models.read.UserRead import UserRead
+from models.update.UpdateFields import UpdateFields
 from uuid import UUID
-from routes.frontend.app import users_id_dict, users_ls
+from starlette.status import HTTP_404_NOT_FOUND
 
 userUpdateField = APIRouter(tags=['Users'])
 
-@userUpdateField.patch('/users/{user_id}', response_model=None, status_code=200)
-async def field_update(user_id: UUID,
-                       name: str | None = Query(default = None, max_length = 15),
-                       username: str | None = Query(default = None, max_length = 15) ,
-                       surname: str | None = Query(default = None, max_length = 15),
-                       email: EmailStr | None = Query(default = None)
-                       ):
+@userUpdateField.patch('/users/{user_uuid}', response_model=UserRead, status_code=200)
+async def field_update(user_uuid: UUID, new_user_data: UpdateFields):
+    with Session(engine) as session:
+        existing_user_to_update = session.exec(select(UsersInTable).where(user_uuid == UsersInTable.id_user)).one_or_none()
 
-    if user_id not in users_id_dict:
-        raise HTTPException(status_code=404, detail=f'user with ID {user_id} not found')
+        if not existing_user_to_update:
+            raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="User not found")
 
-    user = users_id_dict[user_id]
-
-    if name:
-        user.name = name
-    if username:
-        user.username = username
-    if surname:
-        user.surname = surname
-    if email:
-        user.email = email
-
-    users_id_dict[user_id] = user
-
-    for i, existing_user in enumerate(users_ls):
-        if user_id == existing_user.id_user:
-            users_ls[i] = user
+        updated_user = UsersInTable.from_orm(new_user_data)
 
 
+        session.refresh(updated_user)
 
-
-
+        return updated_user

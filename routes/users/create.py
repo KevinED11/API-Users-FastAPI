@@ -45,4 +45,3 @@ async def create_user(user_request: UserCreation = Body(example=
         #session.commit()
 
     return Response(status_code=201, content=str({'message': 'user created successfully', 'user_id': user_request.id_user, 'username': user_request.username}))
-

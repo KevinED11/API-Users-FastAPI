@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Session
-import models.database
+import models.database.Users
 from config.db_connection import engine
 def add_tables_in_db():
   SQLModel.metadata.create_all(bind=engine)

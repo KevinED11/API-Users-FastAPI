@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Body
 from config.db_connection import engine
 from models.request.UserCreation import UserCreation
+from models.update.UpdateUser import UpdateUser
 from models.read.UserRead import UserRead
 from models.database.Users import Users
 from sqlmodel import Session, select
@@ -12,7 +13,7 @@ userUpdate = APIRouter(tags=['Users'])
 
 
 @userUpdate.put('/users/{user_id}', response_model= UserRead, status_code=HTTP_200_OK, response_description='Updated user exist')
-async def user_update(user_id: UUID, updated_user: UserCreation = Body(
+async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
     example= {
   "name": "Jhon",
   "surname": "Gomez",

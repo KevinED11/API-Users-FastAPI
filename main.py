@@ -25,7 +25,7 @@ def on_startup():
 
 #static files server
 
-app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="static")
+app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
 
 
 app.include_router(getAppFrontend)
