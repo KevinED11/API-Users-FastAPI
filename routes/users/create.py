@@ -1,13 +1,15 @@
-from fastapi import APIRouter, HTTPException, Response, Body
-from starlette.status import HTTP_400_BAD_REQUEST
-from models.request.UserCreation import UserCreation
-from models.read.UserRead import UserRead
 from datetime import datetime
-from Password import Password
 from uuid import uuid4
-from config.db_connection import engine
+
+from fastapi import APIRouter, HTTPException, Response, Body
 from sqlmodel import Session
+from starlette.status import HTTP_400_BAD_REQUEST
+
+from Password import Password
+from config.db_connection import engine
 from models.database.Users import Users
+from models.read.UserRead import UserRead
+from models.request.UserCreation import UserCreation
 
 userCreation = APIRouter(tags=['Users'])
 

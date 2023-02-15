@@ -8,12 +8,13 @@ from config.init_db import add_tables_in_db
 from starlette.staticfiles import StaticFiles
 from routes.frontend.app import getAppFrontend
 from routes.users.info import infoGet
-from routes.users.user_creation import userCreation
-from routes.users.users_get import usersGet
-from routes.users.user_find import userFind
-from routes.users.user_update import userUpdate
-from routes.users.user_delete import userDelete
-from routes.users.user_update_field import userUpdateField
+from routes.users.create import userCreation
+from routes.users.get_all import usersGet
+from routes.users.find_by_uuid import findByUuid
+from routes.users.find_by_id import findById
+from routes.users.update import userUpdate
+from routes.users.delete import userDelete
+from routes.users.update_field import userUpdateField
 from routes.users.filter_users import filterUsers
 
 app = FastAPI()
@@ -42,7 +43,10 @@ app.include_router(usersGet)
 app.include_router(filterUsers)
 
 
-app.include_router(userFind)
+app.include_router(findByUuid)
+
+
+app.include_router(findById)
 
 
 app.include_router(userDelete)

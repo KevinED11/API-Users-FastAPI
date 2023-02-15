@@ -2,6 +2,7 @@ from string import ascii_letters, digits, punctuation
 from secrets import choice
 from passlib.hash import bcrypt
 from zxcvbn import zxcvbn
+
 class Password:
     """Generates password
     and verify if password is secure"""
