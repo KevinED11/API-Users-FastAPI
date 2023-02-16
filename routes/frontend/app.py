@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
 from fastapi import HTTPException
-from starlette.responses import HTMLResponse, JSONResponse
+from starlette.responses import HTMLResponse
 from functools import lru_cache
 
 
@@ -28,5 +28,4 @@ def read_app():
 async def get_app_frontend(app_react: str = Depends(read_app)):
         return HTMLResponse(content=app_react, status_code=HTTP_200_OK)
 
-        #return JSONResponse(status_code=HTTP_404_NOT_FOUND, content={"description": "File not found"})
 
