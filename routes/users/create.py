@@ -27,13 +27,11 @@ async def create_user(user_request: UserCreation = Body(example=
     user_request.id_user = uuid4()
     user_request.created_at = datetime.now()
 
-    if len(user_request.password) < 12:
-        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Place 12 or more characters")
+    #if len(user_request.password) < 12:
+     #   raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Place 12 or more characters")
 
     user_request.password = Password.encrypt_password(user_request.password)
 
-    if user_request.age < 18:
-        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail='User is under age(place number >= 18)')
 
 
     with Session(engine) as session:

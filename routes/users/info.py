@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends
 from config.settings import Settings
 from functools import lru_cache
-from dotenv import get_key
 
-infoGet = APIRouter(tags=['Default'])
+infoGet = APIRouter(tags=['Admin info'])
 
 @lru_cache()
 def get_settings():
@@ -12,6 +11,6 @@ def get_settings():
 @infoGet.get('/info', response_model = dict[str, str], status_code = 200, response_description='The information was obtained successfully')
 async def info_get(settings: Settings = Depends(get_settings)):
     return {
-        "app_name": get_key(settings.Config.env_file, 'APP_NAME'),
-        "admin_email": get_key(settings.Config.env_file, 'ADMIN_EMAIL')
+        "app_name": settings.app_name,
+        "admin_email": settings.admin_email
     }

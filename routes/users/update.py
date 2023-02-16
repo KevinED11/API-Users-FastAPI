@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, Body
 from config.db_connection import engine
-from models.request.UserCreation import UserCreation
 from models.update.UpdateUser import UpdateUser
 from models.read.UserRead import UserRead
 from models.database.Users import Users
@@ -24,7 +23,7 @@ async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
 }
 )):
     with Session(engine) as session:
-        existing_user_to_update: Users | None = session.exec(select(Users).where( (user_id == Users.id_user) )).first()
+        existing_user_to_update: Users | None = session.exec( select(Users).where( (user_id == Users.id_user) )).first()
 
         if existing_user_to_update is None:
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="User not found")
@@ -41,16 +40,4 @@ async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
         session.refresh(existing_user_to_update)
 
         return existing_user_to_update
-
-
-
-
-
-
-
-
-
-
-
-
 
