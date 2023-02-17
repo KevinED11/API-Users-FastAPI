@@ -28,13 +28,20 @@ async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
         if existing_user_to_update is None:
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="User not found")
 
-        existing_user_to_update.name, existing_user_to_update.surname, existing_user_to_update.username, existing_user_to_update.age, existing_user_to_update.email, existing_user_to_update.password = (
+        (existing_user_to_update.name,
+         existing_user_to_update.surname,
+         existing_user_to_update.username,
+         existing_user_to_update.age,
+         existing_user_to_update.email,
+         existing_user_to_update.password) = (
             updated_user.name,
             updated_user.surname,
             updated_user.username,
             updated_user.age,
             updated_user.email,
-            Password.encrypt_password(updated_user.password) if not Password.verify_password(password=updated_user.password, hashed_password=existing_user_to_update.password) else existing_user_to_update.password)
+            Password.encrypt_password(updated_user.password)
+            if not Password.verify_password(password=updated_user.password, hashed_password=existing_user_to_update.password)
+            else existing_user_to_update.password)
 
         session.commit()
         session.refresh(existing_user_to_update)

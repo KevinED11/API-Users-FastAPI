@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from config.settings import Settings
 from functools import lru_cache
 
-infoGet = APIRouter(tags=['Admin info'])
+infoGet = APIRouter(tags=['Admin'])
 
 @lru_cache()
 def get_settings():

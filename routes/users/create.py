@@ -33,7 +33,6 @@ async def create_user(user_request: UserCreation = Body(example=
     user_request.password = Password.encrypt_password(user_request.password)
 
 
-
     with Session(engine) as session:
         new_user = Users(**user_request.dict())
         session.add(new_user)

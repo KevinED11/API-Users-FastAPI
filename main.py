@@ -6,7 +6,7 @@ load_dotenv()
 
 from config.init_db import add_tables_in_db
 from starlette.staticfiles import StaticFiles
-from routes.frontend.app import getAppFrontend
+from routes.frontend.root import getAppFrontend
 from routes.users.info import infoGet
 from routes.users.create import userCreation
 from routes.users.get_all import usersGet

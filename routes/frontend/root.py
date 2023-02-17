@@ -4,12 +4,11 @@ from fastapi import HTTPException
 from starlette.responses import HTMLResponse
 from functools import lru_cache
 
-
 getAppFrontend = APIRouter(tags=['Frontend'])
 
 
 @lru_cache()
-def read_app() -> str:
+def read_index() -> str:
     try:
         with open("./frontend/dist/index.html", "r") as app_react:
             content_app: str = app_react.read()
@@ -23,7 +22,8 @@ def read_app() -> str:
     HTTP_200_OK: {"description": "Successful response"},
     HTTP_404_NOT_FOUND: {"description": "File not found"}
 })
-async def get_app_frontend(app_react: str = Depends(read_app)) -> HTMLResponse:
-        return HTMLResponse(content=app_react, status_code=HTTP_200_OK)
+async def get_frontend(app_react: str = Depends(read_index)) -> HTMLResponse:
+        return HTMLResponse(content=app_react, status_code=HTTP_200_OK, media_type="text/html")
+
 
 

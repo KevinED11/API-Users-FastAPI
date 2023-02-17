@@ -2,7 +2,6 @@ from models.base.UserBase import UserBase
 from sqlmodel import Field
 from typing import Optional
 from enum import Enum
-
 class Roles(Enum):
     USER = "user"
     PREMIUM = "premium"
