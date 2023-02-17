@@ -24,7 +24,6 @@ def on_startup():
     add_tables_in_db()
 
 #static files server
-
 app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
 
 
