@@ -1,11 +1,17 @@
 from fastapi import FastAPI
 
+#uvicorn server
 from uvicorn import run as uvicorn_run
+#chargue env variables in app
 from dotenv import load_dotenv
 load_dotenv()
 
+#init db
 from config.init_db import add_tables_in_db
+#static file server
 from starlette.staticfiles import StaticFiles
+from starlette.middleware.gzip import GZipMiddleware
+#routes
 from routes.frontend.root import getAppFrontend
 from routes.users.info import infoGet
 from routes.users.create import userCreation
@@ -18,13 +24,17 @@ from routes.users.update_field import userUpdateField
 from routes.users.filter_users import filterUsers
 
 app = FastAPI()
-
 @app.on_event("startup")
 def on_startup():
     add_tables_in_db()
 
+#middlewares
+app.add_middleware(GZipMiddleware, minimum_size=500)
+
+
 #static files server
-app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
+app.mount("/assets/", StaticFiles(directory="./frontend/dist/assets"), name="assets")
+
 
 
 app.include_router(getAppFrontend)
@@ -58,4 +68,4 @@ app.include_router(userUpdateField)
 
 
 if __name__ == "__main__":
-    uvicorn_run(app=app, host="localhost", port=8000)
+    uvicorn_run(app=app, host="127.0.0.1", port=8000)

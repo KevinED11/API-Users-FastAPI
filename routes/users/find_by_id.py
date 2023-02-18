@@ -10,7 +10,7 @@ findById = APIRouter(tags = ['Users'])
 @findById.get('/users/id/{user_id}', response_model=UserRead, response_description='User found')
 async def get_user_by_id(user_id: int):
     with Session(engine) as session:
-        user = session.get(Users, user_id)
+        user: Users = session.get(Users, user_id)
 
         if user:
             return user
