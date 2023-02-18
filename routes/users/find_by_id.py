@@ -5,12 +5,11 @@ from sqlmodel import Session
 from models.database.Users import Users
 from starlette.status import HTTP_404_NOT_FOUND
 
-findById = APIRouter(tags=['Users'])
+findById = APIRouter(tags = ['Users'])
 
-@findById.get('/users/id/{user_id}', response_model = UserRead, response_description='User found')
+@findById.get('/users/id/{user_id}', response_model=UserRead, response_description='User found')
 async def get_user_by_id(user_id: int):
     with Session(engine) as session:
-
         user = session.get(Users, user_id)
 
         if user:

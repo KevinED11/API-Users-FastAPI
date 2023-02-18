@@ -8,7 +8,7 @@ infoGet = APIRouter(tags=['Admin'])
 def get_settings():
     return Settings()
 
-@infoGet.get('/info', response_model = dict[str, str], status_code = 200, response_description='The information was obtained successfully')
+@infoGet.get('/info', response_model=dict[str, str], status_code=200, response_description='The information was obtained successfully')
 async def info_get(settings: Settings = Depends(get_settings)):
     return {
         "app_name": settings.app_name,

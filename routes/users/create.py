@@ -1,9 +1,9 @@
 from datetime import datetime
 from uuid import uuid4
 
-from fastapi import APIRouter, HTTPException, Response, Body
+from fastapi import APIRouter, Response, Body
 from sqlmodel import Session
-from starlette.status import HTTP_400_BAD_REQUEST
+from starlette.status import HTTP_200_OK, HTTP_201_CREATED
 
 from Password import Password
 from config.db_connection import engine
@@ -11,9 +11,9 @@ from models.database.Users import Users
 from models.read.UserRead import UserRead
 from models.request.UserCreation import UserCreation
 
-userCreation = APIRouter(tags=['Users'])
+userCreation = APIRouter(tags = ['Users'])
 
-@userCreation.post('/users', response_model = UserRead, status_code=201, response_description='Created a new user')
+@userCreation.post('/users', response_model=UserRead, status_code=HTTP_200_OK, response_description='Created a new user')
 async def create_user(user_request: UserCreation = Body(example=
 {
   "name": "Jhon",
@@ -41,4 +41,4 @@ async def create_user(user_request: UserCreation = Body(example=
         #session.add(Users.from_orm(user_request))
         #session.commit()
 
-    return Response(status_code=201, content=str({'message': 'user created successfully', 'user_id': user_request.id_user, 'username': user_request.username}))
+    return Response(status_code=HTTP_201_CREATED, content=str({'message': 'user created successfully', 'user_id': user_request.id_user, 'username': user_request.username}))

@@ -11,7 +11,7 @@ from Password import Password
 userUpdate = APIRouter(tags=['Users'])
 
 
-@userUpdate.put('/users/{user_id}', response_model= UserRead, status_code=HTTP_200_OK, response_description='Updated user exist')
+@userUpdate.put('/users/{user_id}', response_model=UserRead, status_code=HTTP_200_OK, response_description='Updated user exist')
 async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
     example= {
   "name": "Jhon",
@@ -23,7 +23,9 @@ async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
 }
 )):
     with Session(engine) as session:
-        existing_user_to_update: Users | None = session.exec( select(Users).where( (user_id == Users.id_user) )).first()
+        existing_user_to_update: Users | None = session.exec(select(Users)
+                                                             .where( (user_id == Users.id_user) )
+                                                             ).first()
 
         if existing_user_to_update is None:
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="User not found")
@@ -41,7 +43,8 @@ async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
             updated_user.email,
             Password.encrypt_password(updated_user.password)
             if not Password.verify_password(password=updated_user.password, hashed_password=existing_user_to_update.password)
-            else existing_user_to_update.password)
+            else existing_user_to_update.password
+        )
 
         session.commit()
         session.refresh(existing_user_to_update)

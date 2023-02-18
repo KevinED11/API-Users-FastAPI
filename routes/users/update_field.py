@@ -10,10 +10,12 @@ from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
 from Password import Password
 userUpdateField = APIRouter(tags=['Users'])
 
-@userUpdateField.patch('/users/{user_uuid}', response_model = UserRead, status_code = HTTP_200_OK)
+@userUpdateField.patch('/users/{user_uuid}', response_model=UserRead, status_code=HTTP_200_OK)
 async def field_update(user_uuid: UUID, new_data: UpdateFields):
     with Session(engine) as session:
-        existing_user_to_update: Users = session.exec(select( UsersInTable ).where( (user_uuid == UsersInTable.id_user) )).one_or_none()
+        existing_user_to_update: Users | None = session.exec(select(UsersInTable)
+                                                             .where( (user_uuid == UsersInTable.id_user) )
+                                                             ).one_or_none()
 
         if not existing_user_to_update:
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="User not found")

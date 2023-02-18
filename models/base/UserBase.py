@@ -5,8 +5,6 @@ from uuid import UUID
 from typing import Optional
 from pydantic import EmailStr, validator
 from datetime import datetime
-from enum import Enum
-
 
 class UserBase(SQLModel):
     id_user: Optional[UUID] = None
