@@ -8,7 +8,7 @@ from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 userDelete = APIRouter(tags = ['Users'])
 
 @userDelete.delete('/users/{user_id}', response_model=None, status_code=204, response_description='User deleted')
-async def delete_user(user_id: UUID):
+async def delete_user(user_id: UUID) -> Response:
     with Session(engine) as session:
 
         user_to_delete: Users | None = session.exec(select(Users)

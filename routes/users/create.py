@@ -23,7 +23,7 @@ async def create_user(user_request: UserCreation = Body(example=
   "email": "Jhon@gomez.com",
   "password": "PASSWORD",
 }
-)):
+)) -> Response:
     user_request.id_user = uuid4()
     user_request.created_at = datetime.now()
 

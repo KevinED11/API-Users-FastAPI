@@ -11,7 +11,7 @@ from Password import Password
 userUpdateField = APIRouter(tags=['Users'])
 
 @userUpdateField.patch('/users/{user_uuid}', response_model=UserRead, status_code=HTTP_200_OK)
-async def field_update(user_uuid: UUID, new_data: UpdateFields):
+async def field_update(user_uuid: UUID, new_data: UpdateFields) -> Users:
     with Session(engine) as session:
         existing_user_to_update: Users | None = session.exec(select(UsersInTable)
                                                              .where( (user_uuid == UsersInTable.id_user) )
@@ -24,7 +24,7 @@ async def field_update(user_uuid: UUID, new_data: UpdateFields):
                              if not Password.verify_password(new_data.password, existing_user_to_update.password)
                              else existing_user_to_update.password)
 
-        for (key, value) in new_data.dict( exclude_unset = True ).items():
+        for (key, value) in new_data.dict(exclude_unset=True).items():
             setattr(existing_user_to_update, key, value)
 
         session.commit()

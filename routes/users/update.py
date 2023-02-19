@@ -21,7 +21,7 @@ async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
   "email": "Jhon@gomez.com",
   "password": "PASSWORD",
 }
-)):
+)) -> Users:
     with Session(engine) as session:
         existing_user_to_update: Users | None = session.exec(select(Users)
                                                              .where( (user_id == Users.id_user) )

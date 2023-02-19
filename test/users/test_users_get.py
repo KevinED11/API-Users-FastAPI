@@ -1,6 +1,7 @@
 from requests import get, RequestException
 from models.request.UserCreation import UserCreation
 from starlette.status import HTTP_200_OK
+
 def test_get_users() -> list[UserCreation | None] | RequestException:
     try:
         response = get("http://127.0.0.1:8000/users")
@@ -18,3 +19,4 @@ def test_get_users() -> list[UserCreation | None] | RequestException:
         assert all(isinstance(i, UserCreation) for i in users_list_obj)
     except RequestException as error:
         return error
+

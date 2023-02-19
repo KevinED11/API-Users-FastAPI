@@ -8,7 +8,7 @@ from starlette.status import HTTP_404_NOT_FOUND
 findById = APIRouter(tags = ['Users'])
 
 @findById.get('/users/id/{user_id}', response_model=UserRead, response_description='User found')
-async def get_user_by_id(user_id: int):
+async def get_user_by_id(user_id: int) -> Users:
     with Session(engine) as session:
         user: Users = session.get(Users, user_id)
 

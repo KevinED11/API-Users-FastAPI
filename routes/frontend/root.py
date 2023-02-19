@@ -23,7 +23,7 @@ def read_index() -> str:
     HTTP_404_NOT_FOUND: {"description": "File not found"}
 })
 async def get_frontend(app_react: str = Depends(read_index)) -> HTMLResponse:
-        return HTMLResponse(content=app_react, status_code=HTTP_200_OK, media_type="text/html")
+        return HTMLResponse(content=app_react, status_code=HTTP_200_OK, media_type="text/html", headers={"Cache-Control": "max-age=3600"})
 
 
 

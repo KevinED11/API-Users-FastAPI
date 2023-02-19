@@ -31,7 +31,7 @@ def on_startup():
     add_tables_in_db()
 
 #middlewares
-app.add_middleware(GZipMiddleware, minimum_size=500)
+app.add_middleware(GZipMiddleware, minimum_size=400)
 
 
 #static files server

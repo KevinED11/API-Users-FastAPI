@@ -9,7 +9,7 @@ from typing import Optional
 filterUsers = APIRouter(tags = ["Users"])
 
 @filterUsers.get("/users/filter", response_model=list[UserRead], status_code=HTTP_200_OK)
-async def filter_user(name: Optional[str] = None, age: Optional[int] = None):
+async def filter_user(name: Optional[str] = None, age: Optional[int] = None) -> list[Users]:
     with Session(engine) as session:
         # return users list o user
 

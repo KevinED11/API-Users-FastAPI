@@ -7,7 +7,7 @@ from sqlmodel import Session, select
 usersGet = APIRouter(tags = ['Users'])
 
 @usersGet.get('/users', response_model=list[UserRead], status_code=200)
-async def get_users(offset: int = 0, limit: int = Query(default=10, le=100)):
+async def get_users(offset: int = 0, limit: int = Query(default=10, le=100)) -> list[Users]:
     #if offset < 0:
      #   offset = abs(offset)
     offset = max(0, offset)
