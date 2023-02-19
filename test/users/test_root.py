@@ -1,9 +1,11 @@
 from requests import get, RequestException
-def test_read_root():
+from starlette.responses import Response
+from starlette.status import HTTP_200_OK
+def test_index_app() ->  None | RequestException:
     try:
-        response = get("http://localhost:8000/")
-        assert response.status_code == 200
-        print(response.json())
-        assert response.json() == {"message": "Welcome to my API"}
+        response: Response = get("http://localhost:8000/")
+        assert response.status_code == HTTP_200_OK
+        assert isinstance(response.content, bytes)
+        assert response.headers["content-type"] == "text/html; charset=utf-8"
     except RequestException as error:
         return error

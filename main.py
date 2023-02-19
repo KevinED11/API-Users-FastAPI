@@ -10,7 +10,9 @@ load_dotenv()
 from config.init_db import add_tables_in_db
 #static file server
 from starlette.staticfiles import StaticFiles
+#middleware
 from starlette.middleware.gzip import GZipMiddleware
+
 #routes
 from routes.frontend.root import getAppFrontend
 from routes.users.info import infoGet
@@ -36,7 +38,7 @@ app.add_middleware(GZipMiddleware, minimum_size=500)
 app.mount("/assets/", StaticFiles(directory="./frontend/dist/assets"), name="assets")
 
 
-
+#send main html file to client
 app.include_router(getAppFrontend)
 
 

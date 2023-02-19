@@ -7,6 +7,6 @@ class Settings(BaseSettings):
     admin_email: Optional[str] = Field(default = getenv("ADMIN_EMAIL"))
 
     class Config:
-        env_file: str = '.env'
+        env_file: str = ".env"
 
 
