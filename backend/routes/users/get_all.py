@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
-from models.read.UserRead import UserRead
-from models.database.Users import Users
-from config.db_connection import engine
+from backend.models.read.UserRead import UserRead
+from backend.models.database.Users import Users
+from backend.config.db_connection import engine
 from sqlmodel import Session, select
 
 usersGet = APIRouter(tags = ['Users'])

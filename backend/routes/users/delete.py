@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, HTTPException
-from config.db_connection import engine
+from backend.config.db_connection import engine
 from sqlmodel import Session, select
-from models.database.Users import Users
+from backend.models.database.Users import Users
 from uuid import UUID
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 

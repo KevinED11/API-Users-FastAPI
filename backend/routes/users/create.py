@@ -5,11 +5,11 @@ from fastapi import APIRouter, Response, Body
 from sqlmodel import Session
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED
 
-from Password import Password
-from config.db_connection import engine
-from models.database.Users import Users
-from models.read.UserRead import UserRead
-from models.request.UserCreation import UserCreation
+from backend.Password import Password
+from backend.config.db_connection import engine
+from backend.models.database.Users import Users
+from backend.models.read.UserRead import UserRead
+from backend.models.request.UserCreation import UserCreation
 
 userCreation = APIRouter(tags = ['Users'])
 

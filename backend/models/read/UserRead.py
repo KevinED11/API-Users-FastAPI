@@ -1,4 +1,4 @@
-from models.base.UserBase import UserBase
+from backend.models.base.UserBase import UserBase
 from pydantic import Required
 
 class UserRead(UserBase):

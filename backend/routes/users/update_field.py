@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException
-from config.db_connection import engine
+from backend.config.db_connection import engine
 from sqlmodel import Session, select
-from models.database.Users import Users as UsersInTable
-from models.read.UserRead import UserRead
-from models.database.Users import Users
-from models.update.UpdateFields import UpdateFields
+from backend.models.database.Users import Users as UsersInTable
+from backend.models.read.UserRead import UserRead
+from backend.models.database.Users import Users
+from backend.models.update.UpdateFields import UpdateFields
 from uuid import UUID
 from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
-from Password import Password
+from backend.Password import Password
 userUpdateField = APIRouter(tags=['Users'])
 
 @userUpdateField.patch('/users/{user_uuid}', response_model=UserRead, status_code=HTTP_200_OK)

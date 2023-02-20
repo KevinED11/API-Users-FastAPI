@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException
-from models.read.UserRead import UserRead
+from backend.models.read.UserRead import UserRead
 from uuid import UUID
-from config.db_connection import engine
+from backend.config.db_connection import engine
 from sqlmodel import Session, select
-from models.database.Users import Users
+from backend.models.database.Users import Users
 from starlette.status import HTTP_404_NOT_FOUND
 
 findByUuid = APIRouter(tags=['Users'])

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from config.settings import Settings
+from backend.config.settings import Settings
 from functools import lru_cache
 
 infoGet = APIRouter(tags=['Admin'])
