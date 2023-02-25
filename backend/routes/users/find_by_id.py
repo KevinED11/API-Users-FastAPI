@@ -5,7 +5,8 @@ from sqlmodel import Session
 from backend.models.database.Users import Users
 from starlette.status import HTTP_404_NOT_FOUND
 
-findById = APIRouter(tags = ['Users'])
+findById = APIRouter(tags=['Users'])
+
 
 @findById.get('/users/id/{user_id}', response_model=UserRead, response_description='User found')
 async def get_user_by_id(user_id: int) -> Users:

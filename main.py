@@ -35,7 +35,7 @@ def on_startup():
 
 
 # middlewares
-app.add_middleware(GZipMiddleware, minimum_size=400)
+app.add_middleware(GZipMiddleware, minimum_size=300)
 
 # static files server
 app.mount("/assets/", StaticFiles(directory="frontend/dist/assets"), name="assets")

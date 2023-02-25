@@ -6,25 +6,25 @@ from backend.models.database.Users import Users
 from sqlmodel import Session, select
 from uuid import UUID
 from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
-from backend.Password import Password
+from Password import Password
 
 userUpdate = APIRouter(tags=['Users'])
 
 
 @userUpdate.put('/users/{user_id}', response_model=UserRead, status_code=HTTP_200_OK, response_description='Updated user exist')
 async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
-    example= {
-  "name": "Jhon",
-  "surname": "Gomez",
-  "username": "JGOMEZ",
-  "age": 25,
-  "email": "Jhon@gomez.com",
-  "password": "PASSWORD",
-}
+    example={
+        "name": "Jon",
+        "surname": "Gomez",
+        "username": "GOMEZ",
+        "age": 25,
+        "email": "Jhon@gomez.com",
+        "password": "PASSWORD",
+    }
 )) -> Users:
     with Session(engine) as session:
         existing_user_to_update: Users | None = session.exec(select(Users)
-                                                             .where( (user_id == Users.id_user) )
+                                                             .where((user_id == Users.id_user))
                                                              ).first()
 
         if existing_user_to_update is None:
@@ -42,7 +42,8 @@ async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
             updated_user.age,
             updated_user.email,
             Password.encrypt_password(updated_user.password)
-            if not Password.verify_password(password=updated_user.password, hashed_password=existing_user_to_update.password)
+            if not Password.verify_password(password=updated_user.password,
+                                            hashed_password=existing_user_to_update.password)
             else existing_user_to_update.password
         )
 
@@ -50,4 +51,3 @@ async def user_update(user_id: UUID, updated_user: UpdateUser = Body(
         session.refresh(existing_user_to_update)
 
         return existing_user_to_update
-

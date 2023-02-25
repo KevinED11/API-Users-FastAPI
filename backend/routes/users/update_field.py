@@ -1,20 +1,22 @@
 from fastapi import APIRouter, HTTPException
 from backend.config.db_connection import engine
 from sqlmodel import Session, select
-from backend.models.database.Users import Users as UsersInTable
+from backend.models.database.Users import Users as UsersInDb
 from backend.models.read.UserRead import UserRead
 from backend.models.database.Users import Users
 from backend.models.update.UpdateFields import UpdateFields
 from uuid import UUID
 from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
-from backend.Password import Password
+from Password import Password
+
 userUpdateField = APIRouter(tags=['Users'])
+
 
 @userUpdateField.patch('/users/{user_uuid}', response_model=UserRead, status_code=HTTP_200_OK)
 async def field_update(user_uuid: UUID, new_data: UpdateFields) -> Users:
     with Session(engine) as session:
-        existing_user_to_update: Users | None = session.exec(select(UsersInTable)
-                                                             .where( (user_uuid == UsersInTable.id_user) )
+        existing_user_to_update: Users | None = session.exec(select(UsersInDb)
+                                                             .where((user_uuid == UsersInDb.id_user))
                                                              ).one_or_none()
 
         if not existing_user_to_update:
