@@ -11,7 +11,7 @@ from backend.models.database.Users import Users
 from backend.models.read.UserRead import UserRead
 from backend.models.request.UserCreation import UserCreation
 
-userCreation = APIRouter(tags = ['Users'])
+userCreation = APIRouter(tags=['Users'])
 
 
 @userCreation.post('/users', response_model=UserRead,
