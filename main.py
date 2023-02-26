@@ -12,8 +12,8 @@ from backend.config.init_db import add_tables_in_db
 # static file server
 from starlette.staticfiles import StaticFiles
 # middleware
-from starlette.middleware.gzip import GZipMiddleware
-
+from backend.middlewares.gzip import gzip_middleware
+from backend.middlewares.cors import cors_middleware
 # routes
 from backend.routes.ui_client.root import getAppFrontend
 from backend.routes.users.info import infoGet
@@ -25,7 +25,6 @@ from backend.routes.users.update import userUpdate
 from backend.routes.users.delete import userDelete
 from backend.routes.users.update_field import userUpdateField
 from backend.routes.users.filter_users import filterUsers
-
 app = FastAPI()
 
 
@@ -35,14 +34,17 @@ def on_startup():
 
 
 # middlewares
-app.add_middleware(GZipMiddleware, minimum_size=300)
-
+app.add_middleware(middleware_class=gzip_middleware, minimum_size=300)
+app.add_middleware(middleware_class=cors_middleware, allow_origins=["*"],
+                   allow_methods=["get"],
+                   )
 # static files server
 app.mount("/assets/", StaticFiles(directory="frontend/dist/assets"), name="assets")
 
 # send main html file to frontend
 app.include_router(getAppFrontend)
 
+#routes for users
 app.include_router(infoGet)
 
 app.include_router(userCreation)
@@ -60,6 +62,7 @@ app.include_router(userDelete)
 app.include_router(userUpdate)
 
 app.include_router(userUpdateField)
+#end routes for users
 
 if __name__ == "__main__":
     uvicorn_run(app=app, host="0.0.0.0", port=8000)

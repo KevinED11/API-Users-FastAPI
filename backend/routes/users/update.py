@@ -6,7 +6,7 @@ from backend.models.database.Users import Users
 from sqlmodel import Session, select
 from uuid import UUID
 from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
-from Password import Password
+from backend.Password import Password
 
 userUpdate = APIRouter(tags=['Users'])
 

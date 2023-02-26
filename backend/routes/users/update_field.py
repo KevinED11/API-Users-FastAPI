@@ -7,7 +7,7 @@ from backend.models.database.Users import Users
 from backend.models.update.UpdateFields import UpdateFields
 from uuid import UUID
 from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
-from Password import Password
+from backend.Password import Password
 
 userUpdateField = APIRouter(tags=['Users'])
 

@@ -2,17 +2,11 @@ FROM python:3.11.2
 
 WORKDIR /app
 
-
-COPY requirements.txt .
-COPY run_app.sh .
-
 COPY . .
 
-ADD main.py .
+ENV VIRTUAL_ENV=/env
 
-RUN python3 -m venv venv
-
-RUN source ./venv/bin/activate
+RUN python3 -m venv $VIRTUAL_ENV
 
 RUN pip3 install -r requirements.txt
 

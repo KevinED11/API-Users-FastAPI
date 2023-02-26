@@ -5,7 +5,7 @@ from fastapi import APIRouter, Response, Body
 from sqlmodel import Session
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED
 
-from Password import Password
+from backend.Password import Password
 from backend.config.db_connection import engine
 from backend.models.database.Users import Users
 from backend.models.read.UserRead import UserRead
