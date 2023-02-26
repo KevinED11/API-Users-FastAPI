@@ -11,7 +11,7 @@ from backend.models.database.Users import Users
 from backend.models.read.UserRead import UserRead
 from backend.models.request.UserCreation import UserCreation
 
-userCreation = APIRouter(tags = ['Users'])
+userCreation = APIRouter(tags=['Users'])
 
 
 @userCreation.post('/users', response_model=UserRead,
@@ -28,9 +28,6 @@ async def create_user(user_request: UserCreation = Body(example={
 )) -> Response:
     user_request.id_user = uuid4()
     user_request.created_at = datetime.now()
-
-    #if len(user_request.password) < 12:
-     #   raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Place 12 or more characters")
 
     user_request.password = Password.encrypt_password(user_request.password)
 

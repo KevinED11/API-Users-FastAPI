@@ -5,6 +5,7 @@ from backend.models.database.Users import Users
 from uuid import UUID
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 
+
 userDelete = APIRouter(tags=['Users'])
 
 

@@ -11,9 +11,8 @@ load_dotenv()
 from backend.config.init_db import add_tables_in_db
 # static file server
 from starlette.staticfiles import StaticFiles
-# middleware
-from backend.middlewares.gzip import gzip_middleware
-from backend.middlewares.cors import cors_middleware
+# middlewares
+from backend.middlewares.middlewares import middlewares
 # routes
 from backend.routes.ui_client.root import getAppFrontend
 from backend.routes.users.info import infoGet
@@ -34,8 +33,8 @@ def on_startup():
 
 
 # middlewares
-app.add_middleware(middleware_class=gzip_middleware, minimum_size=300)
-app.add_middleware(middleware_class=cors_middleware, allow_origins=["*"],
+app.add_middleware(middleware_class=middlewares["gzip"], minimum_size=300)
+app.add_middleware(middleware_class=middlewares["cors"], allow_origins=["*"],
                    allow_methods=["get"],
                    )
 # static files server
