@@ -5,8 +5,7 @@ from zxcvbn import zxcvbn
 
 
 class Password:
-    """Generates password
-    and verify if password is secure"""
+    """ Generates password and verify if password is secure"""
 
     @classmethod
     def gen_password(cls):

@@ -1,20 +1,18 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from backend.models.read.UserRead import UserRead
 from backend.config.db_connection import engine
 from sqlmodel import Session
 from backend.models.database.Users import Users
-from starlette.status import HTTP_404_NOT_FOUND
+from backend.exceptions.exception_handlers import raise_404_not_found
 
-findById = APIRouter(tags=['Users'])
+find_by_id = APIRouter(tags=['Users'])
 
 
-@findById.get('/users/id/{user_id}', response_model=UserRead, response_description='User found')
+@find_by_id.get('/users/id/{user_id}', response_model=UserRead, response_description='User found')
 async def get_user_by_id(user_id: int) -> Users:
     with Session(engine) as session:
         user: Users = session.get(Users, user_id)
 
         if user:
             return user
-        raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="User not found")
-
-
+        raise_404_not_found(detail="User not found")
