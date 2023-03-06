@@ -1,7 +1,9 @@
 from requests import get, RequestException
 from starlette.responses import Response
 from starlette.status import HTTP_200_OK
-def test_index_app() ->  None | RequestException:
+
+
+def test_index_app() -> None | RequestException:
     try:
         response: Response = get("http://localhost:8000/")
         assert response.status_code == HTTP_200_OK

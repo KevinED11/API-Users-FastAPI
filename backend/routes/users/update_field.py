@@ -6,21 +6,22 @@ from backend.models.read.UserRead import UserRead
 from backend.models.database.Users import Users
 from backend.models.update.UpdateFields import UpdateFields
 from uuid import UUID
-from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
+from backend.exceptions.exception_handlers import raise_404_not_found
+from starlette.status import HTTP_200_OK
 from backend.Password import Password
 
-userUpdateField = APIRouter(tags=['Users'])
+user_update_fields = APIRouter(tags=['Users'])
 
 
-@userUpdateField.patch('/users/{user_uuid}', response_model=UserRead, status_code=HTTP_200_OK)
+@user_update_fields.patch('/users/{user_uuid}', response_model=UserRead, status_code=HTTP_200_OK)
 async def field_update(user_uuid: UUID, new_data: UpdateFields) -> Users:
     with Session(engine) as session:
         existing_user_to_update: Users | None = session.exec(select(UsersInDb)
                                                              .where((user_uuid == UsersInDb.id_user))
                                                              ).one_or_none()
 
-        if not existing_user_to_update:
-            raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="User not found")
+        if existing_user_to_update is None:
+            raise_404_not_found(detail="User not found")
 
         new_data.password = (Password.encrypt_password(new_data.password)
                              if not Password.verify_password(new_data.password, existing_user_to_update.password)

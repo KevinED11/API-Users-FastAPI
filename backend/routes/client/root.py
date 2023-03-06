@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from starlette.responses import HTMLResponse
 from functools import lru_cache
 
-getAppFrontend = APIRouter(tags=['Frontend'])
+frontend_app = APIRouter(tags=['Frontend'])
 
 
 @lru_cache()
@@ -18,8 +18,7 @@ def read_index() -> str:
         raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="File not found")
 
 
-@getAppFrontend.get("/", status_code=HTTP_200_OK,
-                    responses={
+@frontend_app.get("/", status_code=HTTP_200_OK, responses={
                         HTTP_200_OK: {"description": "Successful response"},
                         HTTP_404_NOT_FOUND: {"description": "File not found"}
                     })

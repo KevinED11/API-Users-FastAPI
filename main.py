@@ -11,19 +11,21 @@ load_dotenv()
 from backend.config.init_db import add_tables_in_db
 # static file server
 from starlette.staticfiles import StaticFiles
-# middlewares
-from backend.middlewares.middlewares import middlewares
+# middleware
+from backend.middlewares.middlewares import gzip_middleware, cors_middleware
+
 # routes
-from backend.routes.ui_client.root import getAppFrontend
-from backend.routes.users.info import infoGet
-from backend.routes.users.create import userCreation
-from backend.routes.users.get_all import usersGet
-from backend.routes.users.find_by_uuid import findByUuid
-from backend.routes.users.find_by_id import findById
-from backend.routes.users.update import userUpdate
-from backend.routes.users.delete import userDelete
-from backend.routes.users.update_field import userUpdateField
-from backend.routes.users.filter_users import filterUsers
+from backend.routes.client.root import frontend_app
+from backend.routes.users.info import admin_info
+from backend.routes.users.create import user_creation
+from backend.routes.users.get_all import users_get
+from backend.routes.users.find_by_uuid import find_by_uuid
+from backend.routes.users.find_by_id import find_by_id
+from backend.routes.users.update import update_user
+from backend.routes.users.delete import user_delete
+from backend.routes.users.update_field import user_update_fields
+from backend.routes.users.filter_users import search_users
+
 app = FastAPI()
 
 
@@ -33,35 +35,35 @@ def on_startup():
 
 
 # middlewares
-app.add_middleware(middleware_class=middlewares["gzip"], minimum_size=300)
-app.add_middleware(middleware_class=middlewares["cors"], allow_origins=["*"],
+app.add_middleware(middleware_class=gzip_middleware, minimum_size=300)
+app.add_middleware(middleware_class=cors_middleware, allow_origins=["*"],
                    allow_methods=["get"],
                    )
 # static files server
 app.mount("/assets/", StaticFiles(directory="frontend/dist/assets"), name="assets")
 
-# send main html file to frontend
-app.include_router(getAppFrontend)
+# send main html
+app.include_router(frontend_app)
 
-#routes for users
-app.include_router(infoGet)
+# routes for users
+app.include_router(admin_info)
 
-app.include_router(userCreation)
+app.include_router(user_creation)
 
-app.include_router(usersGet)
+app.include_router(users_get)
 
-app.include_router(filterUsers)
+app.include_router(search_users)
 
-app.include_router(findByUuid)
+app.include_router(find_by_uuid)
 
-app.include_router(findById)
+app.include_router(find_by_id)
 
-app.include_router(userDelete)
+app.include_router(user_delete)
 
-app.include_router(userUpdate)
+app.include_router(update_user)
 
-app.include_router(userUpdateField)
-#end routes for users
+app.include_router(user_update_fields)
+# end routes for users
 
 if __name__ == "__main__":
     uvicorn_run(app=app, host="0.0.0.0", port=8000)
